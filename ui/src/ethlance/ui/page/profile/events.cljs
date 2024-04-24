@@ -68,7 +68,7 @@
           ipfs-hash (base58->hex (:Hash ipfs-event))
           job-contract-address (:job/id ipfs-invitation)
           candidate (:candidate ipfs-invitation)
-          tx-opts {:from creator :gas 10000000}]
+          tx-opts {:from creator}]
       {:dispatch [::web3-events/send-tx
                   {:instance (contract-queries/instance db :job job-contract-address)
                    :fn :add-candidate
@@ -87,7 +87,7 @@
           arbiter-address (:arbiter event-data)
           employer-address (:employer event-data)
           instance (contract-queries/instance (:db cofx) :job job-address)
-          tx-opts {:from employer-address :gas 10000000}
+          tx-opts {:from employer-address}
           contract-args [employer-address [arbiter-address]]]
       {:dispatch [::web3-events/send-tx
                   {:instance instance

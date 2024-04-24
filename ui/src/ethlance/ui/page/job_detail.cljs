@@ -327,16 +327,16 @@
         invited? (= "invited" (:arbitration/status arbitration-by-current-user))
         job-address (get arbitration-by-current-user :job/id)
         active-user (get-in arbitration-by-current-user [:arbiter :user/id])]
+    (println ">>> c-set-arbiter-quote token-amount" @token-amount)
     (if invited?
       [:div.proposal-form
        [:div.label "Set quote to be arbiter"]
        [:div.amount-input
-        [c-text-input
-         {:placeholder "Token amount"
-          :type :number
-          :disabled (not invited?)
-          :value @token-amount
-          :on-change #(re/dispatch [:page.job-detail/set-arbitration-token-amount (js/parseFloat %)])}]
+        [c-token-amount-input
+         {:value @token-amount
+          :decimals 3
+          :placeholder "Token amount"
+          :on-change #(re/dispatch [:page.job-detail/set-arbitration-token-amount %])}]
         [:label "ETH (Ether)"]]
 
        [:div.amount-input
@@ -569,7 +569,7 @@
      [:div.main
       [:div.title *title]
       [:div.sub-title *sub-title] ; TODO: where this comes from
-      [:div.description {:style {:white-space "pre"}} *description]
+      [:div.description {:style {:white-space "pre-wrap"}} *description]
       [:div.label "Required Skills"]
       [:div.skill-listing
        (for [skill *required-skills] [c-tag {:key skill} [c-tag-label skill]])]

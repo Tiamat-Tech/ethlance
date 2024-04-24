@@ -8,6 +8,7 @@
     [district.ui.web3-accounts.queries :as accounts-queries]
     [district.ui.web3-tx.events :as web3-events]
     [district.ui.web3.queries :as web3-queries]
+    [ethlance.shared.constants :as constants]
     [ethlance.shared.contract-constants :as contract-constants]
     [ethlance.shared.utils :refer [base58->hex js-obj->clj-map]]
     [ethlance.ui.event.utils :as event.utils]
@@ -34,7 +35,7 @@
    :job/required-experience-level :intermediate
    :job/estimated-project-length :day
    :job/required-availability :full-time
-   :job/required-skills #{"Somali" "Solidity"}
+   :job/required-skills (set (repeatedly 2 #(rand-nth constants/skills)))
    :job/token-type :eth
    :job/token-amount 0.69
    :job/token-address "0x1111111111111111111111111111111111111111"
@@ -182,7 +183,7 @@
           offered-value (get-job-creation-param db :offered-value)
           ipfs-hash (get-job-creation-param db :ipfs-hash)
           arbiters (get-job-creation-param db :arbiters)
-          tx-opts-base {:from employer :gas "1000000"}
+          tx-opts-base {:from employer}
           token-type (get-job-creation-param db :token-type)
           tx-opts (if (= token-type :eth)
                     (assoc tx-opts-base :value (:value offered-value))
